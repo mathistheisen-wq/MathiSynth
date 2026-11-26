@@ -134,10 +134,12 @@ Ready-made builds are on the **[Releases page](https://github.com/mathistheisen-
 | File | For | How to install |
 |---|---|---|
 | `MathiSynth-Windows.zip` | Windows: FL Studio, Ableton | Unzip it and copy the `MathiSynth.vst3` folder to `C:\Program Files\Common Files\VST3\`. Then rescan plugins. |
-| `MathiSynth-macOS-Installer.pkg` | Mac (Apple Silicon and Intel): FL Studio, Ableton, Logic | Right-click the file → **Open** (needed once, because the installer isn't Apple-signed), then follow the steps. It installs the VST3 and AU plugins and the standalone app. Then rescan plugins. |
-| `MathiSynth-macOS.zip` | Mac, manual install | Copy the plugins yourself, then run `xattr -dr com.apple.quarantine` on them. |
+| `MathiSynth-macOS-Installer.pkg` | Mac (Apple Silicon and Intel): FL Studio, Ableton, Logic | macOS warns that it "could not verify" the installer, because it isn't Apple-signed yet. Follow the **[Mac install guide](docs/MAC_INSTALL.md)**: click *Open Anyway* in System Settings → Privacy & Security, then run the installer. |
+| `MathiSynth-macOS.zip` | Mac, manual install | See *"I'd rather install by hand"* in the [Mac install guide](docs/MAC_INSTALL.md). |
 
 GitHub Actions rebuilds these files on every push to `main`.
+
+**Mac users:** read the step-by-step **[Mac install guide](docs/MAC_INSTALL.md)**. It covers the security warning, setup in FL Studio, Ableton and Logic, troubleshooting, updating and uninstalling.
 
 ## 6. Build and install
 

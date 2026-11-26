@@ -116,5 +116,5 @@ jobs:
             MathiSynth-macOS.zip
           body: |
             **Windows (FL Studio / Ableton):** unzip `MathiSynth-Windows.zip` and copy the `MathiSynth.vst3` folder into `C:\Program Files\Common Files\VST3\`, then rescan plugins.
-            **macOS (easiest):** download `MathiSynth-macOS-Installer.pkg`, then right-click it → **Open** (needed once because the installer isn't signed by Apple) and follow the steps. It installs the VST3 and AU plugins for every DAW, plus the standalone app in Applications. Rescan plugins in FL Studio / Ableton afterwards.
-            **macOS (manual):** unzip `MathiSynth-macOS.zip`, copy `MathiSynth.vst3` to `~/Library/Audio/Plug-Ins/VST3/` (and `MathiSynth.component` to `~/Library/Audio/Plug-Ins/Components/` for AU), then run `xattr -dr com.apple.quarantine` on them because the build is unsigned.
+            **macOS:** download `MathiSynth-macOS-Installer.pkg`. macOS will warn that it "could not verify" the installer, because it isn't Apple-signed yet. Click **Done**, then go to **System Settings → Privacy & Security** and click **Open Anyway**. The installer adds the VST3 and AU plugins and the standalone app. Then rescan plugins in FL Studio or Ableton.
+            Full Mac guide (security warning, DAW setup, troubleshooting, uninstall): https://github.com/mathistheisen-wq/MathiSynth/blob/main/docs/MAC_INSTALL.md
