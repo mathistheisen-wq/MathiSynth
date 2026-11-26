@@ -25,13 +25,13 @@ jobs:
     name: ${{ matrix.name }}
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Configure
         shell: bash
         run: |
           if [ "$RUNNER_OS" == "Windows" ]; then
-            cmake -B build -G "Visual Studio 17 2022" -A x64
+            cmake -B build -A x64   # newest installed Visual Studio
           else
             cmake -B build -DCMAKE_BUILD_TYPE=Release
           fi
@@ -74,7 +74,7 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Work out release tag
         id: tag
         run: |

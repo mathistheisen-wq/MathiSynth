@@ -132,8 +132,8 @@ The presets aim at the general palette of modern melodic trap and R&B production
 All platforms need **CMake 3.22+** and **Git**. The first configure downloads JUCE (about 150 MB). To use a JUCE checkout you already have, pass `-DJUCE_DIR=/path/to/JUCE`.
 
 ### Windows (for FL Studio and Ableton Live)
-1. Install **Visual Studio 2022** with the *Desktop development with C++* workload.
-2. Open *x64 Native Tools Command Prompt for VS 2022* **as Administrator**, then:
+1. Install **Visual Studio 2022 or newer** with the *Desktop development with C++* workload.
+2. Open *x64 Native Tools Command Prompt for VS* **as Administrator**, then:
    ```bat
    scripts\build-windows.bat
    ```
@@ -141,7 +141,7 @@ All platforms need **CMake 3.22+** and **Git**. The first configure downloads JU
 
    To build by hand instead:
    ```bat
-   cmake -B build -G "Visual Studio 17 2022" -A x64
+   cmake -B build -A x64
    cmake --build build --config Release --target MathiSynth_VST3
    ```
    The output is `build\MathiSynth_artefacts\Release\VST3\MathiSynth.vst3`.
