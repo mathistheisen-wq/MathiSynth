@@ -228,15 +228,19 @@ void MathiSynthEditor::Content::paint (Graphics& g)
 {
     g.fillAll (Theme::background);
 
-    // Logo
+    // Logo: one word, two colours. Measure "Mathi" so "Synth" starts exactly where it ends.
+    const Font logoFont (FontOptions (24.0f, Font::bold));
+    const float mathiW = GlyphArrangement::getStringWidth (logoFont, "Mathi");
+    const float synthW = GlyphArrangement::getStringWidth (logoFont, "Synth");
+    g.setFont (logoFont);
     g.setColour (Theme::text);
-    g.setFont (Font (FontOptions (24.0f, Font::bold)));
-    g.drawText ("Mathi", 20, 12, 80, 30, Justification::centredLeft);
+    g.drawText ("Mathi", Rectangle<float> (20.0f, 12.0f, mathiW + 2.0f, 30.0f), Justification::centredLeft);
     g.setColour (Theme::osc);
-    g.drawText ("Synth", 86, 12, 80, 30, Justification::centredLeft);
+    g.drawText ("Synth", Rectangle<float> (20.0f + mathiW, 12.0f, synthW + 2.0f, 30.0f), Justification::centredLeft);
     g.setColour (Theme::textDim);
     g.setFont (Font (FontOptions (11.0f)));
-    g.drawText ("v" + String (MATHISYNTH_VERSION_STRING), 160, 18, 60, 20, Justification::centredLeft);
+    g.drawText ("v" + String (MATHISYNTH_VERSION_STRING),
+                Rectangle<float> (28.0f + mathiW + synthW, 18.0f, 60.0f, 20.0f), Justification::centredLeft);
 }
 
 void MathiSynthEditor::Content::resized()

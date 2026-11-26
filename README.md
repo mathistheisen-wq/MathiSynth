@@ -127,6 +127,18 @@ The presets aim at the general palette of modern melodic trap and R&B production
 
 ---
 
+## Download (no compiling needed)
+
+Ready-made builds are on the **[Releases page](https://github.com/mathistheisen-wq/MathiSynth/releases/latest)**:
+
+| File | For | How to install |
+|---|---|---|
+| `MathiSynth-Windows.zip` | Windows: FL Studio, Ableton | Unzip it and copy the `MathiSynth.vst3` folder to `C:\Program Files\Common Files\VST3\`. Then rescan plugins. |
+| `MathiSynth-macOS-Installer.pkg` | Mac (Apple Silicon and Intel): FL Studio, Ableton, Logic | Right-click the file → **Open** (needed once, because the installer isn't Apple-signed), then follow the steps. It installs the VST3 and AU plugins and the standalone app. Then rescan plugins. |
+| `MathiSynth-macOS.zip` | Mac, manual install | Copy the plugins yourself, then run `xattr -dr com.apple.quarantine` on them. |
+
+GitHub Actions rebuilds these files on every push to `main`.
+
 ## 6. Build and install
 
 All platforms need **CMake 3.22+** and **Git**. The first configure downloads JUCE (about 150 MB). To use a JUCE checkout you already have, pass `-DJUCE_DIR=/path/to/JUCE`.

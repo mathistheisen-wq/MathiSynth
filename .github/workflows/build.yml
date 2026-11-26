@@ -65,10 +65,27 @@ jobs:
           cp -R build/MathiSynth_artefacts/Release/Standalone/MathiSynth.app dist/
           (cd dist && ditto -c -k --keepParent . ../MathiSynth-macOS.zip)
 
+      - name: Build macOS installer (.pkg)
+        if: runner.os == 'macOS'
+        run: |
+          # Files placed by Installer aren't quarantined, so no Terminal step is needed afterwards.
+          VERSION=$(grep -oE 'project\(MathiSynth VERSION [0-9.]+' CMakeLists.txt | awk '{print $3}')
+          ROOT=pkgroot
+          mkdir -p "$ROOT/Library/Audio/Plug-Ins/VST3" "$ROOT/Library/Audio/Plug-Ins/Components" "$ROOT/Applications"
+          cp -R build/MathiSynth_artefacts/Release/VST3/MathiSynth.vst3 "$ROOT/Library/Audio/Plug-Ins/VST3/"
+          cp -R build/MathiSynth_artefacts/Release/AU/MathiSynth.component "$ROOT/Library/Audio/Plug-Ins/Components/"
+          cp -R build/MathiSynth_artefacts/Release/Standalone/MathiSynth.app "$ROOT/Applications/"
+          pkgbuild --root "$ROOT" --identifier com.mathiaudio.mathisynth.pkg --version "$VERSION" \
+                   --install-location / MathiSynth-macOS-Installer.pkg
+          pkgutil --payload-files MathiSynth-macOS-Installer.pkg | grep -E 'vst3$|component$|app$'
+
       - uses: actions/upload-artifact@v4
         with:
           name: MathiSynth-${{ matrix.name }}
-          path: MathiSynth-${{ matrix.name }}.zip
+          path: |
+            MathiSynth-${{ matrix.name }}.zip
+            MathiSynth-macOS-Installer.pkg
+          if-no-files-found: warn
 
   release:
     needs: build
@@ -95,7 +112,9 @@ jobs:
           make_latest: true
           files: |
             MathiSynth-Windows.zip
+            MathiSynth-macOS-Installer.pkg
             MathiSynth-macOS.zip
           body: |
             **Windows (FL Studio / Ableton):** unzip `MathiSynth-Windows.zip` and copy the `MathiSynth.vst3` folder into `C:\Program Files\Common Files\VST3\`, then rescan plugins.
-            **macOS:** unzip `MathiSynth-macOS.zip`, copy `MathiSynth.vst3` to `~/Library/Audio/Plug-Ins/VST3/` (and `MathiSynth.component` to `~/Library/Audio/Plug-Ins/Components/` for AU), then run `xattr -dr com.apple.quarantine` on them because the build is unsigned.
+            **macOS (easiest):** download `MathiSynth-macOS-Installer.pkg`, then right-click it → **Open** (needed once because the installer isn't signed by Apple) and follow the steps. It installs the VST3 and AU plugins for every DAW, plus the standalone app in Applications. Rescan plugins in FL Studio / Ableton afterwards.
+            **macOS (manual):** unzip `MathiSynth-macOS.zip`, copy `MathiSynth.vst3` to `~/Library/Audio/Plug-Ins/VST3/` (and `MathiSynth.component` to `~/Library/Audio/Plug-Ins/Components/` for AU), then run `xattr -dr com.apple.quarantine` on them because the build is unsigned.
