@@ -1,7 +1,7 @@
 name: Build
 
-# Builds MathiSynth on Windows and macOS for every push.
-# Pushing a tag like v1.0.0 also publishes a GitHub Release with the downloadable zips.
+# Builds MathiSynth on Windows and macOS for every push, then publishes the zips as a GitHub Release
+# (release v<version from CMakeLists.txt> for pushes to main, or the tag name for pushed v* tags).
 on:
   push:
     branches: [main]
@@ -71,15 +71,28 @@ jobs:
           path: MathiSynth-${{ matrix.name }}.zip
 
   release:
-    if: startsWith(github.ref, 'refs/tags/v')
     needs: build
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+      - name: Work out release tag
+        id: tag
+        run: |
+          if [[ "$GITHUB_REF" == refs/tags/v* ]]; then
+            echo "name=${GITHUB_REF_NAME}" >> "$GITHUB_OUTPUT"
+          else
+            v=$(grep -oP 'project\(MathiSynth VERSION \K[0-9.]+' CMakeLists.txt)
+            echo "name=v${v}" >> "$GITHUB_OUTPUT"
+          fi
       - uses: actions/download-artifact@v4
         with:
           merge-multiple: true
       - uses: softprops/action-gh-release@v2
         with:
+          tag_name: ${{ steps.tag.outputs.name }}
+          name: MathiSynth ${{ steps.tag.outputs.name }}
+          target_commitish: ${{ github.sha }}
+          make_latest: true
           files: |
             MathiSynth-Windows.zip
             MathiSynth-macOS.zip
